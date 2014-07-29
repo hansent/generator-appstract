@@ -1,0 +1,38 @@
+{
+  "name": "generator-appstract",
+  "version": "0.0.0",
+  "description": "Yeoman generator",
+  "license": "MIT",
+  "main": "app/index.js",
+  "repository": "hansent/generator-appstract",
+  "author": {
+    "name": "Thomas Hansen",
+    "email": "thomas.hansen@gmail.com",
+    "url": "https://github.com/hansent"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "files": [
+    "app"
+  ],
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "dependencies": {
+    "chalk": "~0.4.0",
+    "git-user-email": "^0.1.1",
+    "git-user-name": "^0.1.0",
+    "yeoman-generator": "~0.16.0",
+    "yosay": "^0.1.0"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "peerDependencies": {
+    "yo": ">=1.0.0"
+  }
+}
