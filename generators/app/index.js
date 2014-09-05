@@ -12,16 +12,19 @@ var AppstractGenerator = yeoman.generators.NamedBase.extend({
 
         this.mkdir(this.appname);
         this.destinationRoot(this.appname);
-        this.directory('app/img', 'app/img');
 
         this.template('_README.md', 'README.md');
         this.template('_LICENSE', 'LICENSE');
         this.template('_package.json', 'package.json');
         this.copy('gulpfile.js', 'gulpfile.js');
-        this.copy('app/main.js', 'app/main.js');
-        this.copy('app/style.css', 'app/style.css');
-        this.template('app/_index.html', 'app/index.html');
+        this.copy('index.js', 'index.js');
+
+        this.directory('public/img', 'public/img');
+        this.template('public/_index.html', 'public/index.html');
+        this.copy('public/main.js', 'public/main.js');
+        this.copy('public/style.css', 'public/style.css');
     }
+
 });
 
 module.exports = AppstractGenerator;

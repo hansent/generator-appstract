@@ -12,7 +12,6 @@ var browserSync = require('browser-sync');
 
 
 
-
 // default task /////////////////////////////////////////////////
 gulp.task('default', ['build', 'browser-sync', 'watch']);
 
@@ -31,14 +30,14 @@ gulp.task('browserify', function() {
     var environ = {
         NODE_ENV: process.env.NODE_ENV
     };
-    return browserify('./app/main.js')
+    return browserify('./public/main.js')
         .transform(envify(environ))
         .transform(partialify)
         .bundle({
             debug: process.env.NODE_ENV === 'development'
         })
         .on('error', notify.onError('Error: <%= error.message %>'))
-        .pipe(source('app.js'))
+        .pipe(source('index.js'))
         .pipe(gulp.dest('build/'))
         .pipe(browserSync.reload({
             stream: true,
@@ -50,12 +49,12 @@ gulp.task('browserify', function() {
 
 // assets //////////////////////////////////////////////////////
 gulp.task('html', function() {
-    gulp.src('./app/**/*.html')
+    gulp.src('./public/**/*.html')
         .pipe(gulp.dest('build/'));
 });
 
 gulp.task('css', function() {
-    return gulp.src('app/**/*.css')
+    return gulp.src('public/**/*.css')
         .pipe(autoprefixer('last 1 version'))
         .pipe(gulp.dest('build/'))
         .pipe(browserSync.reload({
@@ -65,12 +64,12 @@ gulp.task('css', function() {
 
 
 gulp.task('images', ['favicon'], function() {
-    return gulp.src('app/img/**/*')
+    return gulp.src('public/img/**/*')
         .pipe(gulp.dest('build/img'));
 });
 
 gulp.task('favicon', function() {
-    return gulp.src('app/img/favicon.ico')
+    return gulp.src('public/img/favicon.ico')
         .pipe(gulp.dest('build/'));
 });
 
@@ -85,5 +84,5 @@ gulp.task('browser-sync', function() {
 
 
 gulp.task('watch', function() {
-    gulp.watch('app/**/*', ['build']);
+    gulp.watch('public/**/*', ['build']);
 });
