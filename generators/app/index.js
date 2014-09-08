@@ -16,6 +16,7 @@ var AppstractGenerator = yeoman.generators.NamedBase.extend({
         this.template('_README.md', 'README.md');
         this.template('_LICENSE', 'LICENSE');
         this.template('_package.json', 'package.json');
+        this.copy('gitignore', '.gitignore');
         this.copy('gulpfile.js', 'gulpfile.js');
         this.copy('index.js', 'index.js');
 
