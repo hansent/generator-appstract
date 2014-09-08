@@ -1,20 +1,21 @@
 'use strict';
 
 var gulp = require('gulp');
+var source = require('vinyl-source-stream');
 var browserify = require('browserify');
 var envify = require('envify/custom');
 var partialify = require('partialify');
-var source = require('vinyl-source-stream');
+var sourcemaps = require('gulp-sourcemaps');
+var less = require('gulp-less');
+var autoprefixer = require('gulp-autoprefixer');
 var rimraf = require('gulp-rimraf');
 var notify = require('gulp-notify');
-var autoprefixer = require('gulp-autoprefixer');
 var browserSync = require('browser-sync');
 
 
 
 // default task /////////////////////////////////////////////////
 gulp.task('default', ['build', 'browser-sync', 'watch']);
-
 
 gulp.task('clean', function() {
     return gulp.src(['build/**/*'], {
@@ -23,8 +24,9 @@ gulp.task('clean', function() {
 });
 
 
+
 // build tasks //////////////////////////////////////////////////
-gulp.task('build', ['browserify', 'css', 'html', 'images']);
+gulp.task('build', ['css', 'html', 'images', 'browserify']);
 
 gulp.task('browserify', function() {
     var environ = {
@@ -34,34 +36,42 @@ gulp.task('browserify', function() {
         .transform(envify(environ))
         .transform(partialify)
         .bundle({
-            debug: process.env.NODE_ENV === 'development'
+            debug: process.env.NODE_ENV != 'production'
         })
-        .on('error', notify.onError('Error: <%= error.message %>'))
+        .on('error', function(err) {
+            notify.onError('Error: <%= error.message %>')(err);
+            this.end();
+        })
         .pipe(source('index.js'))
-        .pipe(gulp.dest('build/'))
-        .pipe(browserSync.reload({
-            stream: true,
-            once: true
-        }));
+        .pipe(gulp.dest('build/'));
 });
 
 
 
 // assets //////////////////////////////////////////////////////
 gulp.task('html', function() {
-    gulp.src('./public/**/*.html')
-        .pipe(gulp.dest('build/'));
+    return gulp.src('./public/**/*.html')
+        .pipe(gulp.dest('build/'))
 });
 
 gulp.task('css', function() {
     return gulp.src('public/**/*.css')
         .pipe(autoprefixer('last 1 version'))
-        .pipe(gulp.dest('build/'))
-        .pipe(browserSync.reload({
-            stream: true
-        }));
+        .pipe(gulp.dest('./build'))
 });
 
+gulp.task('less', function() {
+    var less_transform = less();
+    less_transform.on('error', function(err) {
+        notify.onError('<%= error.message %>')(err);
+        this.end();
+    });
+    return gulp.src('./public/**/*.less')
+        .pipe(sourcemaps.init())
+        .pipe(less_transform)
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest('./build'));
+});
 
 gulp.task('images', ['favicon'], function() {
     return gulp.src('public/img/**/*')
@@ -74,15 +84,23 @@ gulp.task('favicon', function() {
 });
 
 
-gulp.task('browser-sync', function() {
-    browserSync.init(null, {
-        server: {
-            baseDir: './build',
-        }
-    });
+
+// file watching & rebuild/reload on change ////////////////////
+gulp.task('watch', function() {
+    gulp.watch('public/**/*.js', ['browserify']);
+    gulp.watch('public/**/*.html', ['html']);
+    gulp.watch('public/**/*.css', ['css']);
+    gulp.watch('public/**/*.less', ['less']);
+    gulp.watch('public/img/**/*', ['images']);
 });
 
-
-gulp.task('watch', function() {
-    gulp.watch('public/**/*', ['build']);
+gulp.task('browser-sync', function() {
+    browserSync({
+        tunnel: true,
+        open: 'local',
+        files: './build/**/*',
+        server: {
+            baseDir: './build',
+        },
+    });
 });
