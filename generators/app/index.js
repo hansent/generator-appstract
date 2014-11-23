@@ -82,13 +82,14 @@ var AppstractGenerator = yeoman.generators.Base.extend({
             return done();
 
         console.log("running " + chalk.yellow("npm install"));
-        this.npmInstall(null, null, function() {
-            console.log(chalk.green("\nALL DONE!"));
-            console.log(chalk.white("you can now run"));
-            console.log(chalk.yellow("cd " + this.appname));
-            console.log(chalk.yellow("gulp"));
-            done();
-        }.bind(this));
+        this.spawnCommand('npm', ['install'])
+            .on('exit', function(code) {
+                console.log(chalk.green("\nALL DONE!"));
+                console.log(chalk.white("you can now run"));
+                console.log(chalk.yellow("cd " + this.name));
+                console.log(chalk.yellow("gulp"));
+                done();
+            });
     }
 
 });

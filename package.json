@@ -23,16 +23,18 @@
     "yeoman-generator"
   ],
   "dependencies": {
-    "chalk": "~0.4.0",
-    "git-user-email": "^0.1.1",
-    "git-user-name": "^0.1.0",
-    "yeoman-generator": "~0.16.0",
-    "yosay": "^0.1.0"
+    "async": "*",
+    "chalk": "*",
+    "git-user-email": "*",
+    "git-user-name": "*",
+    "mime": "^*",
+    "yeoman-generator": "*",
+    "yosay": "*"
   },
   "devDependencies": {
     "mocha": "*"
   },
   "peerDependencies": {
-    "yo": ">=1.0.0"
+    "yo": "*"
   }
 }
