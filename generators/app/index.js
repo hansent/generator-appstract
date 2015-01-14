@@ -55,7 +55,7 @@ var AppstractGenerator = yeoman.generators.Base.extend({
 
         this.directory('public/img', 'public/img');
         this.template('public/_index.html', 'public/index.html');
-        this.copy('public/main.js', 'public/main.js');
+        this.copy('public/index.js', 'public/index.js');
         this.copy('public/style.css', 'public/style.css');
 
     },
