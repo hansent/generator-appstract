@@ -40,7 +40,7 @@ var AppstractGenerator = yeoman.generators.Base.extend({
         console.log('APP NAME:', chalk.bold.green(this.name));
 
         this.appname = this.name;
-        this.username = require('git-user-name');
+        this.username = require('git-user-email');
         this.useremail = require('git-user-email');
 
         this.mkdir(this.appname);

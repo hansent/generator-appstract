@@ -2,10 +2,7 @@
     "name": "<%= appname %>",
     "version": "0.1.0",
     "private": true,
-    "author": {
-        "name": "<%= username %>",
-        "email": "<%= useremail %>"
-    },
+    "author": "<%= useremail %>",
     "dependencies": {},
     "devDependencies": {
         "gulp": "^3.8.10",
